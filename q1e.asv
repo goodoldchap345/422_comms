@@ -15,7 +15,7 @@ delay_rc=3;
 %prcos=prcos(1:end-f_ovsamp+1);
 %prcos=prcos/norm(prcos);
 % NEW code to generate root-raised cosine pulseshape (rolloff factor 0.5)
-prcos = rcosdesign( 0, delay_rc*2, f_ovsamp );
+prcos = rcosdesign( 1, delay_rc*2, f_ovsamp );
 pcmatch=prcos(end:-1:1);
 % Generating a rectangular pulse shape
 prect=ones(1,f_ovsamp);
@@ -27,7 +27,7 @@ psine=psine/norm(psine);
 psmatch=psine(end:-1:1);
 % Generating random signal data for polar signaling
 s_data=2*round(rand(L,1))-1;
-s_data = [-1; -1; 1; -1; 1; 1; -1; 1; 1; 1];
+s_data = [-1; -1; 1; -1; 1; 1; -1; 1; 1; 1]
 % upsample to match the 'fictitious oversampling rate'
 % which is f_ovsamp/T (T=1 is the symbol duration)
 s_up=upsample(s_data,f_ovsamp);
@@ -44,8 +44,8 @@ t=(1:200)/f_ovsamp;
 subplot(311) 
 figwave1=plot(t,xrcos(delayrc/2:delayrc/2+199));
 
-Tau=t(200);
-eye1=eyediagram(xrcos,2*Tau,2*Tau,Tau/2);title('RZ eye-diagram');
+Tau=
+eye1=eyediagram(xrcos,2*Tau,Tau,Tau/2);title('RZ eye-diagram');
 
 
 title(' (a) Root-raised cosine pulse. .');

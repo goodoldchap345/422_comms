@@ -1,3 +1,6 @@
+
+
+
 % function hout = eyediagram (x, n, xper, xoff, str, h)
 %
 % Plot the eye-diagram of x. 
