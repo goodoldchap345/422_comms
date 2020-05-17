@@ -1,6 +1,6 @@
 
 clear;clf;close all;
-L=100; % Total data symbols in experiment is 1 million
+L=10000; % Total data symbols in experiment is 1 million
 % To display the pulse shape, we oversample the signal
 % by factor of f_ovsamp=8
 f_ovsamp=8; % Oversampling factor vs data rate
@@ -8,7 +8,7 @@ delay_rc=3;
 
 
 % NEW code to generate root-raised cosine pulseshape (rolloff factor 0.5)
-prcos = rcosdesign( 0, delay_rc*2, f_ovsamp );
+prcos = rcosdesign( 1, delay_rc*2, f_ovsamp );
 pcmatch=prcos(end:-1:1);
 % Generating a rectangular pulse shape
 prect=ones(1,f_ovsamp);
@@ -82,7 +82,7 @@ for i=0:10
     end
     % Now compare against the original data to compute BER for
     % the three pulses
-    BER=[BER;sum(abs(s_data-decoded))/(2*L)];
+    BER=[BER;sum((abs(s_data-decoded) > 0))/(2*L)];
 end
 figure(1)
 subplot(111)
