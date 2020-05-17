@@ -77,7 +77,7 @@ for i=1:10,
     z2=z2(delayrt+1:f_ovsamp:end) ;
     z3=z3(delaysn+1:f_ovsamp:end);
     % Decision based on the sign of the samples
-    dec1=sign(z1(1:L)); dec2=sign(z2(1:L)); dec3=sign(z3(1:L));
+    dec1=sign(z1(1:L)); dec2=sign(z2(1:L)); dec3=sign(z3(1:L))
     % Now compare against the original data to compute BER for
     % the three pulses
     BER=[BER;sum(abs(s_data-dec1))/(2*L) ...

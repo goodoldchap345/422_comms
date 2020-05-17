@@ -1,30 +1,37 @@
-% Matlab Program <Exl0_l .m>
-% This Matlab exercise <Exl0_l.m> performs simulation of
-% binary baseband polar transmission in AWGN channel .
-% The program generates polar baseband signals using 3 different
-% pulse shapes (root-raised cosine (r=0.5), rectangular, half-sine)
-% and estimate the bit error rate (BER) at different Eb/N for display
-clear;clf;
-L=5; % Total data symbols in experiment is 1 million
+
+clear;clf;close all;
+L=100; % Total data symbols in experiment is 1 million
 % To display the pulse shape, we oversample the signal
 % by factor of f_ovsamp=8
-f_ovsamp=50; % Oversampling factor vs data rate
-delay_rc=2;
-% OLD Matlab code to Generate root-raised cosine pulseshape (rolloff factor 0.5)
-%prcos=rcosflt([ 1 ], 1, f_ovsamp, 'sqrt', 0.5, delay_rc);
-%prcos=prcos(1:end-f_ovsamp+1);
-%prcos=prcos/norm(prcos);
+f_ovsamp=8; % Oversampling factor vs data rate
+delay_rc=3;
+
+
 % NEW code to generate root-raised cosine pulseshape (rolloff factor 0.5)
-prcos = rcosdesign( 1, delay_rc*2, f_ovsamp );
-pcmatch=prcos(end:-3:3);
+prcos = rcosdesign( 0, delay_rc*2, f_ovsamp );
+pcmatch=prcos(end:-1:1);
 % Generating a rectangular pulse shape
 prect=ones(1,f_ovsamp);
 prect=prect/norm(prect);
-prmatch=prect(end:-3:3);
+prmatch=prect(end:-1:1);
 % Generating random signal data for polar signaling
-s_data = [-3; 3; 1; 3; 1];
 
-%s_data
+s_data = zeros(L, 1);
+for i=1:L
+   num = round(3*rand(1));
+   switch (num) 
+       case 0
+           s_data(i) = -3;
+       case 1
+           s_data(i) = -1;
+       case 2
+           s_data(i) = 1;
+       case 3
+           s_data(i) = 3;
+   end 
+end
+
+transpose(s_data);
 % upsample to match the 'fictitious oversampling rate'
 % which is f_ovsamp/T (T=1 is the symbol duration)
 s_up=upsample(s_data,f_ovsamp);
@@ -32,33 +39,18 @@ s_up=upsample(s_data,f_ovsamp);
 % and matched filters
 delayrc=2*delay_rc*f_ovsamp;
 delayrt=f_ovsamp-1;
-delaysn=f_ovsamp-1;
 % Generate polar signaling of different pulse- shaping
 xrcos=conv(s_up,prcos);
 xrect=conv(s_up,prect);
-t=(1:200)/f_ovsamp;
-figure(1)
-subplot(311)
-figwave1=plot(t,xrcos(delayrc/2:delayrc/2+199));
-title(' (a) Root-raised cosine pulse. .');
-set(figwave1 , 'Linewidth' ,2);
-subplot(312)
-figwave2=plot(t,xrect(delayrt:delayrt+199));
-title(' (b) Rectangular pulse.')
-set(figwave2, 'Linewidth' ,2);
-
-Tau=t(200);
-Tau=10;
-eye1=eyediagram(xrcos,2*Tau,2*Tau,Tau/2);title('RZ eye-diagram');
 
 % Find the signal length
 Lrcos=length(xrcos);Lrect=length(xrect) ;
 BER=[];
 noiseq=randn(Lrcos,1) ;
 % Generating the channel noise (AWGN)
-for i=1:10
-    Eb2N(i)=i;                          %(Eb/N in dB )
-    Eb2N_num=10^(Eb2N(i)/10);           % Eb/N in linear scale
+for i=0:10
+    Eb2N(i+1)=i;                          %(Eb/N in dB )
+    Eb2N_num=10^(Eb2N(i+1)/10);           % Eb/N in linear scale
     Var_n=1/(2*Eb2N_num);               % 1/SNR is the noise variance
     signois=sqrt(Var_n);                % standard deviation
     awgnois=signois*noiseq;             % AWGN
@@ -72,21 +64,34 @@ for i=1:10
     z1=z1(delayrc+1:f_ovsamp:end);
     z2=z2(delayrt+1:f_ovsamp:end) ;
     % Decision based on the sign of the samples
-    dec1=sign(z1(1:L)); dec2=sign(z2(1:L));
+    decoded = zeros(L, 1);
+    for j=1:L
+        if (z1(j) < 0)
+            if (z1(j) < -2)
+                decoded(j) = -3;
+            else
+                decoded(j) = -1;
+            end
+        else
+            if (z1(j) > 2)
+                decoded(j) = 3;
+            else
+                decoded(j) = 1;
+            end
+        end
+    end
     % Now compare against the original data to compute BER for
     % the three pulses
-    BER=[BER;sum(abs(s_data-dec1))/(2*L) ...
-        sum(abs(s_data-dec2))/(2*L)];
-    Q(i)= 0.5*erfc(sqrt(Eb2N_num)); %Compute the Analytical BER
+    BER=[BER;sum(abs(s_data-decoded))/(2*L)];
 end
-figure(3)
-subplot( 111)
-figber=semilogy(Eb2N,Q, 'k-' ,Eb2N,BER( : ,1), 'b-*', ...
-    Eb2N,BER(:,2), 'r-o');
-legend('Analytical', 'Root-raised cosine', 'Rectangular')
+figure(1)
+subplot(111)
+figber=semilogy(Eb2N,BER( : ,1), 'b-*');
+legend('Root-raised cosine')
 xlabel('E_b/N (dB)') ;ylabel('BER')
 set(figber, 'Linewidth' ,2) ;
-figure(4)
+
+figure(2)
 % Spectrum comparison
 [Psd1,f]=pwelch(xrcos, [], [], [], 'twosided' ,f_ovsamp) ;
 [Psd2,f]=pwelch(xrect, [], [], [], 'twosided' ,f_ovsamp);
