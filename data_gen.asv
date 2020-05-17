@@ -1,8 +1,0 @@
-
-clear all;
-close all;
-clf;
-
-L = 10;
-
-for
