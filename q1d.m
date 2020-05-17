@@ -5,25 +5,43 @@
 % pulse shapes (root-raised cosine (r=0.5), rectangular, half-sine)
 % and estimate the bit error rate (BER) at different Eb/N for display
 clear;clf;
-L=10; % Total data symbols in experiment is 1 million
+L=1000000; % Total data symbols in experiment is 1 million
 % To display the pulse shape, we oversample the signal
 % by factor of f_ovsamp=8
 f_ovsamp=20; % Oversampling factor vs data rate
-delay_rc=20;
+delay_rc=3;
 % OLD Matlab code to Generate root-raised cosine pulseshape (rolloff factor 0.5)
 %prcos=rcosflt([ 1 ], 1, f_ovsamp, 'sqrt', 0.5, delay_rc);
 %prcos=prcos(1:end-f_ovsamp+1);
 %prcos=prcos/norm(prcos);
 % NEW code to generate root-raised cosine pulseshape (rolloff factor 0.5)
-prcos = rcosdesign( 1, delay_rc*2, f_ovsamp );
-pcmatch=prcos(end:-1:1);
+prcos = rcosdesign( 0, delay_rc*2, f_ovsamp );
+pcmatch=prcos(end:-3:3);
 % Generating a rectangular pulse shape
 prect=ones(1,f_ovsamp);
 prect=prect/norm(prect);
-prmatch=prect(end:-1:1);
+prmatch=prect(end:-3:3);
 % Generating random signal data for polar signaling
-s_data=2*round(rand(L,1))-1;
-s_data = [-1; -1; 1; -1; 1; 1; -1; 1; 1; 1];
+%s_data=2*round(rand(L,1))-1;
+%s_data = [-1; -1; 1; -1; 1; 1; -1; 1; 1; 1];
+%s_data = [-3; 3; 1; 3; 1];
+
+s_data = zeros(L, 1);
+for i=1:L
+   num = round(3*rand(1));
+   switch (num) 
+       case 0
+           s_data(i) = -3;
+       case 1
+           s_data(i) = -1;
+       case 2
+           s_data(i) = 1;
+       case 3
+           s_data(i) = 3;
+   end 
+end
+
+%s_data
 % upsample to match the 'fictitious oversampling rate'
 % which is f_ovsamp/T (T=1 is the symbol duration)
 s_up=upsample(s_data,f_ovsamp);
