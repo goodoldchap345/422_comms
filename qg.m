@@ -60,10 +60,15 @@ for i=0:10
     % Apply matched filters first
     z1=conv(yrcos,pcmatch);clear awgnois, yrcos;
     z2=conv(yrect,prmatch);clear yrect;
+    
+%     Tau=8;
+%     eye1=eyediagram(z1,2*Tau,Tau,Tau/2);title('RRCS eye-diagram');
+    
     % Sampling the received signal and acquire samples
     z1=z1(delayrc+1:f_ovsamp:end);
     z2=z2(delayrt+1:f_ovsamp:end) ;
     % Decision based on the sign of the samples
+    
     decoded = zeros(L, 1);
     for j=1:L
         if (z1(j) < 0)
@@ -82,7 +87,7 @@ for i=0:10
     end
     % Now compare against the original data to compute BER for
     % the three pulses
-    BER=[BER;sum((abs(s_data-decoded) > 0))/(2*L)];
+    BER=[BER;sum((abs(s_data-decoded) > 0))/(2*L)]
 end
 figure(1)
 subplot(111)

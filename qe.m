@@ -99,3 +99,5 @@ tt2=title(' (b) PSD using rectangular NRZ pulse');
 set(tt2, 'FontSize' ,11);
 
 
+
+
