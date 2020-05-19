@@ -80,8 +80,6 @@ Tau=8;
 eye1=eyediagram(z1,2*Tau,Tau,Tau/2);title('RRCS eye-diagram');
 
 
-% ----------- rxer -----------
-
 figure(4)
 % Spectrum comparison
 [Psd1,f]=pwelch(xrcos, [], [], [], 'twosided' ,f_ovsamp) ;

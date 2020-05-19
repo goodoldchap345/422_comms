@@ -1,6 +1,6 @@
 
 clear;clf;close all;
-L=10000; % Total data symbols in experiment is 1 million
+L=20000; % Total data symbols in experiment is 1 million
 % To display the pulse shape, we oversample the signal
 % by factor of f_ovsamp=8
 f_ovsamp=8; % Oversampling factor vs data rate

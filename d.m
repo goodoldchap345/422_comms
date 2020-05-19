@@ -16,14 +16,14 @@ transpose(s_data)
 % upsample to match the 'fictitious oversampling rate'
 % which is f_ovsamp/T (T=1 is the symbol duration)
 s_up=upsample(s_data,f_ovsamp);
-% Identify the decision delays due to pulse shaping
-% and matched filters
-delayrc=2*delay_rc*f_ovsamp;
 % Generate polar signaling of different pulse- shaping
 xrcos=conv(s_up,prcos);
 
 figure(1)
 plot(xrcos)
+title("Time Domain Output of 4 PAM Waveform")
+xlabel("Time")
+ylabel("Voltage")
 
 figure(2)
 % Spectrum comparison
