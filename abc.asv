@@ -1,17 +1,5 @@
 
 clear;clf;close all;
-
-% Part b, plotting PSD of NRZ signal
-figure(1)
-f = [-1e6:100:1e6];
-symbolRate = 500000;
-Ts = 1/symbolRate;
-S_f = (5*Ts).*(sinc((pi*Ts).*f));
-plot(f, S_f)
-
-
-
-
 L=500; % Total data symbols in experiment is 1 million
 % To display the pulse shape, we oversample the signal
 % by factor of f_ovsamp=8
@@ -56,7 +44,7 @@ delayrt=f_ovsamp-1;
 xrcos=conv(s_up,prcos);
 xrect=conv(s_up,prect);
 
-figure(2)
+figure(1)
 plot(xrcos)
 
 % t=(1:200)/f_ovsamp;
@@ -71,10 +59,23 @@ plot(xrcos)
 % title(' (b) Rectangular pulse.')
 % set(figwave2, 'Linewidth' ,2);
 
-% sending over lin
+% sending over link
+
+% ----------- rxer -----------
+
+% Apply matched filters on receiver
+z1=conv(xrcos,pcmatch);
+z2=conv(xrect,prmatch);
+
+figure(2)
+plot(z1)
 
 
-figure(3)
+Tau=8;
+eye1=eyediagram(z1,2*Tau,Tau,Tau/2);title('RRCS eye-diagram');
+
+
+figure(4)
 % Spectrum comparison
 [Psd1,f]=pwelch(xrcos, [], [], [], 'twosided' ,f_ovsamp) ;
 [Psd2,f]=pwelch(xrect, [], [], [], 'twosided' ,f_ovsamp);

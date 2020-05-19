@@ -92,7 +92,7 @@ end
 figure(1)
 subplot(111)
 figber=semilogy(Eb2N,BER( : ,1), 'b-*');
-legend('Root-raised cosine')
+title("Effect of Noise on Bit Error Rate")
 xlabel('E_b/N (dB)') ;ylabel('BER')
 set(figber, 'Linewidth' ,2) ;
 
@@ -111,5 +111,7 @@ ylabel('Power spectral density');
 xlabel('frequency in unit of {1/T} ' );
 tt2=title(' (b) PSD using rectangular NRZ pulse');
 set(tt2, 'FontSize' ,11);
+
+
 
 

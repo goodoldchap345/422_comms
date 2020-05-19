@@ -1,9 +1,4 @@
-% Matlab Program <Exl0_l .m>
-% This Matlab exercise <Exl0_l.m> performs simulation of
-% binary baseband polar transmission in AWGN channel .
-% The program generates polar baseband signals using 3 different
-% pulse shapes (root-raised cosine (r=0.5), rectangular, half-sine)
-% and estimate the bit error rate (BER) at different Eb/N for display
+
 clear;clf;close all;
 L=500; % Total data symbols in experiment is 1 million
 % To display the pulse shape, we oversample the signal
