@@ -68,7 +68,6 @@ for i=0:10
     z1=z1(delayrc+1:f_ovsamp:end);
     z2=z2(delayrt+1:f_ovsamp:end) ;
     % Decision based on the sign of the samples
-    
     decoded = zeros(L, 1);
     for j=1:L
         if (z1(j) < 0)

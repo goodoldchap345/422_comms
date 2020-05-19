@@ -15,7 +15,6 @@ prect=ones(1,f_ovsamp);
 prect=prect/norm(prect);
 prmatch=prect(end:-1:1);
 % Generating random signal data for polar signaling
-s_data = [-3; 3; 1; 3; 1];
 
 s_data = zeros(L, 1);
 for i=1:L

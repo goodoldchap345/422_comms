@@ -21,6 +21,8 @@ title("PSD of 4 PAM with rectangular NRZ pulse shape")
 xlabel("Frequency (Hz)")
 ylabel("Power spectral density")
 
+
+
 % Part c, PSD of raised cosine signal
 %f = [-1e6:100:1e6];
 syms f
@@ -39,6 +41,7 @@ xlabel("Frequency (Hz)")
 ylabel("Power spectral density")
 
 
+% Code to genrate PSD plot with data 
 
 
 L=500; % Total data symbols in experiment is 1 million
@@ -110,7 +113,7 @@ figure(4)
 figpsd1=semilogy(f-f_ovsamp/2,fftshift(Psd1));
 ylabel('Power spectral density');
 xlabel('frequency in unit of {1/T}');
-tt1=title(' (a) PSD using root-raised cosine pulse (rolloff factor r=0.5) ');
+tt1=title(' (a) PSD using root-raised cosine pulse (rolloff factor alpha=1) ');
 set(tt1, 'FontSize' ,11);
 figure (5)
 figpsd2=semilogy(f-f_ovsamp/2,fftshift(Psd2));

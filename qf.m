@@ -63,7 +63,7 @@ plot(xrcos)
 Lrcos=length(xrcos);Lrect=length(xrect) ;
 BER=[];
 noiseq=randn(Lrcos,1) ;
-%Noisy Boi
+%AWGN signal
 Eb2N = 10;                          % 10dB SNR (Eb/N)
 Eb2N_num=10^(Eb2N/10);           % Eb/N in linear scale
 Var_n=1/(2*Eb2N_num);               % 1/SNR is the noise variance
@@ -87,7 +87,7 @@ Tau=8;
 eye1=eyediagram(z1,2*Tau,Tau,Tau/2);title('RRCS eye-diagram');
 
 
-% ----------- rxer -----------
+
 
 figure(4)
 % Spectrum comparison
