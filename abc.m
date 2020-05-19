@@ -2,12 +2,24 @@
 clear;clf;close all;
 
 % Part b, plotting PSD of NRZ signal
-figure(1)
+% Set f axis data set 
 f = [-1e6:100:1e6];
 symbolRate = 500000;
 Ts = 1/symbolRate;
-S_f = (5*Ts).*(sinc((pi*Ts).*f));
+% PSD function
+f_angular = f./2;
+a = sinc((pi*Ts).*f_angular);
+S_f = (5*Ts).*(a.^2);
+
+figure(1)
 plot(f, S_f)
+ylim([0 1.1e-5])
+xlim([-1e6 1e6])
+xline(0.5e6, 'r')
+xline(-0.5e6, 'r')
+title("PSD of 4 PAM with rectangular NRZ pulse shape")
+xlabel("Frequency (Hz)")
+ylabel("Power spectral density")
 
 
 
