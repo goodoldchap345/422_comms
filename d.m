@@ -11,7 +11,7 @@ prcos = rcosdesign( 1, delay_rc*2, f_ovsamp );
 pcmatch=prcos(end:-1:1);
 
 % Generating random signal data for polar signaling
-s_data = [-3; 3; 1; 3; 1];
+s_data = [-3; 3; 1; -1; 1];
 transpose(s_data)
 % upsample to match the 'fictitious oversampling rate'
 % which is f_ovsamp/T (T=1 is the symbol duration)

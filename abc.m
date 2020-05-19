@@ -9,15 +9,32 @@ Ts = 1/symbolRate;
 % PSD function
 f_angular = f./2;
 a = sinc((pi*Ts).*f_angular);
-S_f = (5*Ts).*(a.^2);
+S_f_rect = (5*Ts).*(a.^2);
 
 figure(1)
-plot(f, S_f)
+plot(f, S_f_rect)
 ylim([0 1.1e-5])
 xlim([-1e6 1e6])
 xline(0.5e6, 'r')
 xline(-0.5e6, 'r')
 title("PSD of 4 PAM with rectangular NRZ pulse shape")
+xlabel("Frequency (Hz)")
+ylabel("Power spectral density")
+
+% Part c, PSD of raised cosine signal
+%f = [-1e6:100:1e6];
+syms f
+a = 1+cos((pi*Ts)*f);
+S_f_rcos = ((5*Ts)/4)*a^2;
+
+figure(2)
+y = piecewise(f<=-0.5e6, 0, -0.5e6<f<0.5e6, S_f_rcos, f>=0.5e6, 0);
+fplot(y)
+xline(0.5e6, 'r')
+xline(-0.5e6, 'r')
+ylim([0 1.1e-5])
+xlim([-1e6 1e6])
+title("PSD of 4 PAM with Rasied Cosine pulse shape")
 xlabel("Frequency (Hz)")
 ylabel("Power spectral density")
 
@@ -68,7 +85,7 @@ delayrt=f_ovsamp-1;
 xrcos=conv(s_up,prcos);
 xrect=conv(s_up,prect);
 
-figure(2)
+figure(3)
 plot(xrcos)
 
 % t=(1:200)/f_ovsamp;
@@ -86,7 +103,7 @@ plot(xrcos)
 % sending over lin
 
 
-figure(3)
+figure(4)
 % Spectrum comparison
 [Psd1,f]=pwelch(xrcos, [], [], [], 'twosided' ,f_ovsamp) ;
 [Psd2,f]=pwelch(xrect, [], [], [], 'twosided' ,f_ovsamp);
